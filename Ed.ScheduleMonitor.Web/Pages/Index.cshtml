@@ -1,0 +1,30 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Mājas";
+}
+
+@if (!User.Identity.IsAuthenticated)
+{
+    <div class="text-center">
+        <h1 class="display-4">Laipni Lūgti</h1>
+        <p>Šī vietne ļauj jums efektīgāk pārlūkot savu Mustanga kursu grafiku un saņemt paziņojumus par izmaiņām (nākotnē).</p>
+        <p>
+            <img src="~/images/CalendarPreview.png" style="width: 50%;" />
+        </p>
+    </div>
+}
+else
+{
+    @section Scripts {
+        <script>
+            $(function () {
+                $('[data-toggle="popover"]').popover({
+                    trigger: 'focus'
+                });
+            })
+        </script>
+    }
+
+    <calendar month="@Model.CurrentDate.Month" year="@Model.CurrentDate.Year" events="@Model.CalendarEvents" />
+}
