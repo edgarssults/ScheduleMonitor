@@ -4,8 +4,8 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <UserSecretsId>aspnet-Ed.ScheduleMonitor.Web-D24ACB44-9B65-42F3-8024-FC4B0973FC00</UserSecretsId>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
   </PropertyGroup>
-
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
@@ -13,15 +13,9 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
   </ItemGroup>
 
-
   <ItemGroup>
     <ProjectReference Include="..\Ed.ScheduleMonitor.Data\Ed.ScheduleMonitor.Data.csproj" />
     <ProjectReference Include="..\Ed.ScheduleMonitor.Logic\Ed.ScheduleMonitor.Logic.csproj" />
-  </ItemGroup>
-
-
-  <ItemGroup>
-    <None Include="wwwroot\images\CalendarPreview.png" />
   </ItemGroup>
 
 </Project>
