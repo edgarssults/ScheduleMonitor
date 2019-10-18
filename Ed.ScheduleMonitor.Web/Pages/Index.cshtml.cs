@@ -44,7 +44,7 @@ namespace Ed.ScheduleMonitor.Web.Pages
 
                 var monthStart = new DateTime(CurrentDate.Year, CurrentDate.Month, 1);
                 var startDate = monthStart.AddDays(-(int)monthStart.DayOfWeek + 1);
-                var endDate = startDate.AddMonths(1).AddDays(14);
+                var endDate = startDate.AddMonths(1).AddDays(14).AddHours(23).AddMinutes(59);
 
                 var user = await _userManager.GetUserAsync(User);
                 var events = await _calendarLogic.GetEvents(user, startDate, endDate);

@@ -205,5 +205,48 @@ namespace Ed.ScheduleMonitor.Test
             results.First().Name.Should().Be("Test Client");
             _storageLogic.Verify(m => m.RemoveEvent(It.IsAny<CalendarEvent>()), Times.Once);
         }
+
+        [Fact]
+        public async Task GetEvents_NoEvents_ExistingEventsNotRemoved()
+        {
+            var user = new ApplicationUser
+            {
+                ScheduleUsername = "test user",
+            };
+            var startDate = new DateTime(2019, 10, 1);
+            var endDate = new DateTime(2019, 10, 31);
+            var html = "HTML";
+
+            var storageEvents = new List<CalendarEvent>
+            {
+                new CalendarEvent
+                {
+                    CalendarEventId = 1002,
+                    Code = "OLD",
+                    StartDate = new DateTime(2019, 10, 1, 9, 0, 0),
+                    EndDate = new DateTime(2019, 10, 1, 9, 30, 0),
+                    Experience = "TEST",
+                    Name = "Old Test Client",
+                    Phone = "12345",
+                    UserName = user.ScheduleUsername,
+                    IsRed = true,
+                    IsGray = false,
+                },
+            };
+            _storageLogic.Setup(m => m.GetEvents(user.ScheduleUsername, startDate, endDate))
+                .Returns(storageEvents);
+
+            _downloadLogic.Setup(m => m.GetScheduleHtml(user))
+                .Returns(Task.FromResult(html));
+            _downloadLogic.Setup(m => m.ParseScheduleHtml(html, user.ScheduleUsername))
+                .Returns(new List<CalendarEvent>());
+
+            List<CalendarEvent> results = await _target.GetEvents(user, startDate, endDate);
+
+            results.Should().NotBeNullOrEmpty();
+            results.Count.Should().Be(1);
+            results.First().Name.Should().Be("Old Test Client");
+            _storageLogic.Verify(m => m.RemoveEvent(It.IsAny<CalendarEvent>()), Times.Never);
+        }
     }
 }
