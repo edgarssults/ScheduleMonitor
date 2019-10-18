@@ -58,27 +58,27 @@ namespace Ed.ScheduleMonitor.Logic
             }
 
             List<CalendarEvent> storageEvents = _storageLogic.GetEvents(user.ScheduleUsername, startDate, endDate);
-            var storageEventsToRemove = new List<CalendarEvent>();
 
-            // Determine which calendar events have been canceled and should be removed
-            // TODO: This should be done in a scheduled job in the future
-            foreach (CalendarEvent storageEvent in storageEvents)
-            {
-                CalendarEvent onlineEvent = onlineEvents.FirstOrDefault(e => e.StartDate == storageEvent.StartDate);
+            //// Determine which calendar events have been canceled and should be removed
+            //// TODO: This should be done in a scheduled job in the future
+            //var storageEventsToRemove = new List<CalendarEvent>();
+            //foreach (CalendarEvent storageEvent in storageEvents)
+            //{
+            //    CalendarEvent onlineEvent = onlineEvents.FirstOrDefault(e => e.StartDate == storageEvent.StartDate);
 
-                if (onlineEvent == null)
-                {
-                    // Add the event for removal
-                    storageEventsToRemove.Add(storageEvent);
-                }
-            }
+            //    if (onlineEvent == null)
+            //    {
+            //        // Add the event for removal
+            //        storageEventsToRemove.Add(storageEvent);
+            //    }
+            //}
 
-            // Remove the canceled events
-            foreach (CalendarEvent storageEvent in storageEventsToRemove)
-            {
-                _storageLogic.RemoveEvent(storageEvent);
-                storageEvents.RemoveAll(e => e.StartDate == storageEvent.StartDate);
-            }
+            //// Remove the canceled events
+            //foreach (CalendarEvent storageEvent in storageEventsToRemove)
+            //{
+            //    _storageLogic.RemoveEvent(storageEvent);
+            //    storageEvents.RemoveAll(e => e.StartDate == storageEvent.StartDate);
+            //}
 
             return storageEvents;
         }
