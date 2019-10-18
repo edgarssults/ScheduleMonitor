@@ -189,7 +189,7 @@ namespace Ed.ScheduleMonitor.Web.Helpers
                         new XAttribute("data-trigger", "focus"),
                         new XAttribute("tabindex", "0"),
                         new XAttribute("data-content", e.ToString()),
-                        e.Name
+                        $"{e.StartDate.ToShortTimeString()}-{e.EndDate.ToShortTimeString()} {e.Name}"
                     )
                 ) ?? new[] {
                     new XElement("p",
