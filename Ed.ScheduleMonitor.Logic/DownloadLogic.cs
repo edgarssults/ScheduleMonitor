@@ -36,10 +36,10 @@ namespace Ed.ScheduleMonitor.Logic
                 var loginRequest = new HttpRequestMessage(HttpMethod.Post, url + "?action=auth")
                 {
                     Content = new FormUrlEncodedContent(new Dictionary<string, string>
-                {
-                    { "login", user.ScheduleUsername },
-                    { "pass", user.SchedulePassword },
-                }),
+                    {
+                        { "login", user.ScheduleUsername },
+                        { "pass", user.SchedulePassword },
+                    }),
                 };
                 var loginResponse = await client.SendAsync(loginRequest);
                 loginResponse.EnsureSuccessStatusCode();

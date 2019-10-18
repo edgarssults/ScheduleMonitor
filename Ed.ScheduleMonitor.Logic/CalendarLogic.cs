@@ -35,29 +35,52 @@ namespace Ed.ScheduleMonitor.Logic
         /// <param name="endDate">End date to get events to.</param>
         public async Task<List<CalendarEvent>> GetEvents(ApplicationUser user, DateTime startDate, DateTime endDate)
         {
-            var html = await _downloadLogic.GetScheduleHtml(user);
-            var onlineEvents = _downloadLogic.ParseScheduleHtml(html, user.ScheduleUsername);
+            string html = await _downloadLogic.GetScheduleHtml(user);
+            List<CalendarEvent> onlineEvents = _downloadLogic.ParseScheduleHtml(html, user.ScheduleUsername);
 
-            // Compare online and stored events and update storage
-            // This should be done in a scheduled job in the future
-            foreach (var onlineEvent in onlineEvents)
+            // Update storage with new and changed events
+            // TODO: This should be done in a scheduled job in the future
+            foreach (CalendarEvent onlineEvent in onlineEvents)
             {
-                var existingEvent = _storageLogic.GetEvent(onlineEvent.UserName, onlineEvent.StartDate);
+                CalendarEvent storageEvent = _storageLogic.GetEvent(onlineEvent.UserName, onlineEvent.StartDate);
 
-                if (existingEvent == null)
+                if (storageEvent == null)
                 {
                     // Add the new event
                     _storageLogic.AddEvent(onlineEvent);
                 }
-                else if (existingEvent.Name != onlineEvent.Name && existingEvent.Code != onlineEvent.Code)
+                else if (storageEvent.Name != onlineEvent.Name && storageEvent.Code != onlineEvent.Code)
                 {
                     // Replace the existing event if it's been changed
-                    _storageLogic.RemoveEvent(existingEvent);
+                    _storageLogic.RemoveEvent(storageEvent);
                     _storageLogic.AddEvent(onlineEvent);
                 }
             }
 
-            return _storageLogic.GetEvents(user.ScheduleUsername, startDate, endDate);
+            List<CalendarEvent> storageEvents = _storageLogic.GetEvents(user.ScheduleUsername, startDate, endDate);
+            var storageEventsToRemove = new List<CalendarEvent>();
+
+            // Determine which calendar events have been canceled and should be removed
+            // TODO: This should be done in a scheduled job in the future
+            foreach (CalendarEvent storageEvent in storageEvents)
+            {
+                CalendarEvent onlineEvent = onlineEvents.FirstOrDefault(e => e.StartDate == storageEvent.StartDate);
+
+                if (onlineEvent == null)
+                {
+                    // Add the event for removal
+                    storageEventsToRemove.Add(storageEvent);
+                }
+            }
+
+            // Remove the canceled events
+            foreach (CalendarEvent storageEvent in storageEventsToRemove)
+            {
+                _storageLogic.RemoveEvent(storageEvent);
+                storageEvents.RemoveAll(e => e.StartDate == storageEvent.StartDate);
+            }
+
+            return storageEvents;
         }
     }
 }
