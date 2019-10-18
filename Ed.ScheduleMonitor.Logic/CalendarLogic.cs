@@ -62,9 +62,10 @@ namespace Ed.ScheduleMonitor.Logic
             if (onlineEvents.Any())
             {
                 // Determine which calendar events have been canceled and should be removed
+                // Only look at storage events that start today because online events don't include history
                 // TODO: This should be done in a scheduled job in the future
                 var storageEventsToRemove = new List<CalendarEvent>();
-                foreach (CalendarEvent storageEvent in storageEvents)
+                foreach (CalendarEvent storageEvent in storageEvents.Where(se => se.StartDate > onlineEvents.Min(oe => oe.StartDate.Date)))
                 {
                     CalendarEvent onlineEvent = onlineEvents.FirstOrDefault(e => e.StartDate == storageEvent.StartDate);
 
