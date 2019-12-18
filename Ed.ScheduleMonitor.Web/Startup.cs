@@ -1,10 +1,13 @@
 using Ed.ScheduleMonitor.Data;
 using Ed.ScheduleMonitor.Logic;
+using Ed.ScheduleMonitor.Web.Helpers;
+using Ed.ScheduleMonitor.Web.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -28,10 +31,16 @@ namespace Ed.ScheduleMonitor.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<ApplicationUser>()
+            services
+                .AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")))
+                .AddDefaultIdentity<ApplicationUser>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            // Email
+            services
+                .AddTransient<IEmailSender, EmailSender>()
+                .Configure<AuthMessageSenderOptions>(Configuration);
 
             services.Configure<IdentityOptions>(options =>
             {
