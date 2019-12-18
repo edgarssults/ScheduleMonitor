@@ -27,6 +27,12 @@ namespace Ed.ScheduleMonitor.Logic
         /// <param name="user">The user to use for downloading.</param>
         public async Task<string> GetScheduleHtml(ApplicationUser user)
         {
+            if (string.IsNullOrEmpty(user.ScheduleUsername)
+                || string.IsNullOrEmpty(user.SchedulePassword))
+            {
+                return null;
+            }
+
             var client = _clientFactory.CreateClient();
             var url = "https://www.mustangs.lv/app/ig/";
 

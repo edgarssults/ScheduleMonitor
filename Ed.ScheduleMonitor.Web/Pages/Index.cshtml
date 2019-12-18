@@ -14,7 +14,7 @@
         </p>
     </div>
 }
-else
+else if (Model.CalendarEvents.Any())
 {
     @section Scripts {
         <script>
@@ -27,4 +27,12 @@ else
     }
 
     <calendar month="@Model.CurrentDate.Month" year="@Model.CurrentDate.Year" events="@Model.CalendarEvents" />
+}
+else
+{
+<div>
+    <h1>Papildiniet profilu</h1>
+    <p>Pagaidām netika atrasts neviens grafika ieraksts.</p>
+    <p>Pārliecinieties, ka profilā esat ievadījuši savu Mustanga lietotājvārdu un paroli (saite augšpusē).</p>
+</div>
 }
