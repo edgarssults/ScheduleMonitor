@@ -169,7 +169,7 @@ namespace Ed.ScheduleMonitor.Web.Helpers
                             ),
                             new XElement("small",
                                 new XAttribute("class", "col d-lg-none text-center text-muted"),
-                                d.DayOfWeek.ToString()
+                                Translations.ResourceManager.GetString(d.DayOfWeek.ToString())
                             ),
                             new XElement("span",
                                 new XAttribute("class", "col-1"),
@@ -201,6 +201,11 @@ namespace Ed.ScheduleMonitor.Web.Helpers
             {
                 var components = new List<string>();
 
+                if (e.IsRed)
+                {
+                    components.Add("w");
+                }
+
                 if (!string.IsNullOrEmpty(e.Timeslot))
                 {
                     components.Add(e.Timeslot);
@@ -217,9 +222,27 @@ namespace Ed.ScheduleMonitor.Web.Helpers
             string GetClasses(CalendarEventViewModel e)
             {
                 var sb = new StringBuilder("event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small");
-                sb.Append($" bg-{(e.IsRed ? "danger" : e.IsGray ? "secondary" : "light")}");
-                sb.Append(!e.IsRed && !e.IsGray ? " border text-muted" : " border border-danger text-white");
 
+                if (!e.IsRed && !e.IsGray)
+                {
+                    sb.Append(" bg-light text-muted");
+                }
+                
+                if (e.IsGray)
+                {
+                    sb.Append(" bg-secondary");
+                }
+
+                if (e.IsRed)
+                {
+                    sb.Append(" bg-danger");
+                }
+
+                if (e.IsGray || e.IsRed)
+                {
+                    sb.Append(" text-white");
+                }
+                
                 return sb.ToString();
             }
 
