@@ -16,6 +16,10 @@ namespace Ed.ScheduleMonitor.Logic
         private readonly IHttpClientFactory _clientFactory;
         private readonly static Dictionary<string, List<string>> _cookieCache = new Dictionary<string, List<string>>();
 
+        /// <summary>
+        /// Schedule download and parsing logic.
+        /// </summary>
+        /// <param name="clientFactory">HTTP client factory.</param>
         public DownloadLogic(IHttpClientFactory clientFactory)
         {
             _clientFactory = clientFactory;

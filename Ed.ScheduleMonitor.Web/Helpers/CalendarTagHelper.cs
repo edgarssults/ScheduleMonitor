@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Xml.Linq;
 
 namespace Ed.ScheduleMonitor.Web.Helpers
@@ -183,13 +184,9 @@ namespace Ed.ScheduleMonitor.Web.Helpers
             {
                 return events?.SingleOrDefault(e => e.Key == d)?.Select(e =>
                     new XElement("a",
-                        new XAttribute("class", $"event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small text-white bg-{(e.IsRed ? "danger" : e.IsGray ? "secondary" : "primary")}"),
-                        new XAttribute("title", e.Name),
-                        new XAttribute("data-toggle", "popover"),
-                        new XAttribute("data-trigger", "focus"),
-                        new XAttribute("tabindex", "0"),
-                        new XAttribute("data-content", e.ToString()),
-                        $"{e.Timeslot} {e.Name}"
+                        new XAttribute("class", GetClasses(e)),
+                        GetAttributes(e),
+                        GetContent(e)
                     )
                 ) ?? new[] {
                     new XElement("p",
@@ -197,6 +194,49 @@ namespace Ed.ScheduleMonitor.Web.Helpers
                         "No events"
                     )
                 };
+            }
+
+            string GetContent(CalendarEventViewModel e)
+            {
+                var components = new List<string>();
+
+                if (!string.IsNullOrEmpty(e.Timeslot))
+                {
+                    components.Add(e.Timeslot);
+                }
+
+                if (!string.IsNullOrEmpty(e.Name))
+                {
+                    components.Add(e.Name);
+                }
+
+                return string.Join(" ", components);
+            }
+
+            string GetClasses(CalendarEventViewModel e)
+            {
+                var sb = new StringBuilder("event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small");
+                sb.Append($" bg-{(e.IsRed ? "danger" : e.IsGray ? "secondary" : "light")}");
+                sb.Append(!e.IsRed && !e.IsGray ? " border text-muted" : " border border-danger text-white");
+
+                return sb.ToString();
+            }
+
+            XAttribute[] GetAttributes(CalendarEventViewModel e)
+            {
+                if (!string.IsNullOrEmpty(e.Name))
+                {
+                    return new XAttribute[]
+                    {
+                        new XAttribute("title", e.Name),
+                        new XAttribute("data-toggle", "popover"),
+                        new XAttribute("data-trigger", "focus"),
+                        new XAttribute("tabindex", "0"),
+                        new XAttribute("data-content", e.ToString())
+                    };
+                }
+
+                return Array.Empty<XAttribute>();
             }
         }
     }
