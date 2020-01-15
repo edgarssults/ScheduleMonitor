@@ -1,4 +1,5 @@
 ﻿using Ed.ScheduleMonitor.Web.Models;
+using Ed.ScheduleMonitor.Web.Resources;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using System;
 using System.Collections.Generic;
@@ -49,7 +50,7 @@ namespace Ed.ScheduleMonitor.Web.Helpers
                             ),
                             new XElement("h4",
                                 new XAttribute("class", "display-4 mb-2 text-center"),
-                                monthStart.ToString("MMMM yyyy")
+                                $"{Translations.ResourceManager.GetString(monthStart.ToString("MMMM"))} {monthStart.Year}"
                             ),
                             new XElement("a",
                                 new XAttribute("class", "btn btn-dark align-self-center col-auto ml-auto"),
@@ -64,7 +65,7 @@ namespace Ed.ScheduleMonitor.Web.Helpers
                             days.Select(d =>
                                 new XElement("h5",
                                     new XAttribute("class", "col-lg p-1 text-center"),
-                                    d.ToString()
+                                    Translations.ResourceManager.GetString(d.ToString())
                                 )
                             )
                         )
