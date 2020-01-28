@@ -50,7 +50,7 @@ namespace Ed.ScheduleMonitor.Web.Helpers
                             ),
                             new XElement("h4",
                                 new XAttribute("class", "display-4 mb-2 text-center"),
-                                $"{Translations.ResourceManager.GetString(monthStart.ToString("MMMM"))} {monthStart.Year} ({Events.Count(e => e.IsRed)})"
+                                $"{Translations.ResourceManager.GetString(monthStart.ToString("MMMM"))} {monthStart.Year} ({Events.Count(e => e.StartDate.Month == monthStart.Month && e.IsRed)})"
                             ),
                             new XElement("a",
                                 new XAttribute("class", "btn btn-dark align-self-center col-auto ml-auto"),
