@@ -58,6 +58,7 @@ namespace Ed.ScheduleMonitor.Web.Pages
                     Experience = e.Experience,
                     IsRed = e.IsRed,
                     IsGray = e.IsGray,
+                    IsGreen = e.IsGreen,
                 }).ToList();
             }
         }

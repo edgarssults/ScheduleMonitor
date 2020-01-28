@@ -40,6 +40,7 @@ namespace Ed.ScheduleMonitor.Logic
 
             // Update storage with new and changed events
             // TODO: This should be done in a scheduled job in the future
+            // TODO: Check whether we actually need to download again if it's been done recently
             foreach (CalendarEvent onlineEvent in onlineEvents)
             {
                 CalendarEvent storageEvent = _storageLogic.GetEvent(onlineEvent.UserName, onlineEvent.StartDate);

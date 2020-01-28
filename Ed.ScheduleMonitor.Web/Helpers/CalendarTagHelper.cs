@@ -50,7 +50,7 @@ namespace Ed.ScheduleMonitor.Web.Helpers
                             ),
                             new XElement("h4",
                                 new XAttribute("class", "display-4 mb-2 text-center"),
-                                $"{Translations.ResourceManager.GetString(monthStart.ToString("MMMM"))} {monthStart.Year}"
+                                $"{Translations.ResourceManager.GetString(monthStart.ToString("MMMM"))} {monthStart.Year} ({Events.Count(e => e.IsRed)})"
                             ),
                             new XElement("a",
                                 new XAttribute("class", "btn btn-dark align-self-center col-auto ml-auto"),
@@ -173,7 +173,7 @@ namespace Ed.ScheduleMonitor.Web.Helpers
                             ),
                             new XElement("span",
                                 new XAttribute("class", "col-1"),
-                                String.Empty
+                                string.Empty
                             )
                         ),
                         GetEventHtml(d)
@@ -201,11 +201,6 @@ namespace Ed.ScheduleMonitor.Web.Helpers
             {
                 var components = new List<string>();
 
-                if (e.IsRed)
-                {
-                    components.Add("w");
-                }
-
                 if (!string.IsNullOrEmpty(e.Timeslot))
                 {
                     components.Add(e.Timeslot);
@@ -223,7 +218,7 @@ namespace Ed.ScheduleMonitor.Web.Helpers
             {
                 var sb = new StringBuilder("event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small");
 
-                if (!e.IsRed && !e.IsGray)
+                if (!e.IsRed && !e.IsGray && !e.IsGreen)
                 {
                     sb.Append(" bg-light text-muted");
                 }
@@ -238,7 +233,12 @@ namespace Ed.ScheduleMonitor.Web.Helpers
                     sb.Append(" bg-danger");
                 }
 
-                if (e.IsGray || e.IsRed)
+                if (e.IsGreen)
+                {
+                    sb.Append(" bg-success");
+                }
+
+                if (e.IsGray || e.IsRed || e.IsGreen)
                 {
                     sb.Append(" text-white");
                 }

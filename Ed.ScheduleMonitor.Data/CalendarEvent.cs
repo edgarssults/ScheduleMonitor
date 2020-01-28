@@ -56,5 +56,10 @@ namespace Ed.ScheduleMonitor.Data
         /// Indicates whether the calendar event is marked gray.
         /// </summary>
         public bool IsGray { get; set; }
+
+        /// <summary>
+        /// Indicates whether the calendar event is marked green.
+        /// </summary>
+        public bool IsGreen { get; set; }
     }
 }

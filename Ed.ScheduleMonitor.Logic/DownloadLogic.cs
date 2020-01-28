@@ -127,6 +127,7 @@ namespace Ed.ScheduleMonitor.Logic
                             0),
                         IsRed = styleMatch.Contains("red"),
                         IsGray = styleMatch.Contains("gray2"),
+                        IsGreen = styleMatch.Contains("green"),
                         Name = alert.Groups["name"].Value,
                         Code = alert.Groups["code"].Value,
                         Phone = alert.Groups["phone"].Value,

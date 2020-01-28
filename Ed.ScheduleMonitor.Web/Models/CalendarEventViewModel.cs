@@ -43,6 +43,11 @@ namespace Ed.ScheduleMonitor.Web.Models
         public bool IsGray { get; set; }
 
         /// <summary>
+        /// Indicates whether the calendar event is marked green.
+        /// </summary>
+        public bool IsGreen { get; set; }
+
+        /// <summary>
         /// Calendar event time slot.
         /// </summary>
         public string Timeslot

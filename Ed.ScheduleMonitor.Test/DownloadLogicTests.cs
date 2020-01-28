@@ -31,6 +31,7 @@ namespace Ed.ScheduleMonitor.Test
             results.Count.Should().Be(280);
             results.Where(r => string.IsNullOrEmpty(r.Name)).Count().Should().Be(222);
             results.Where(r => !string.IsNullOrEmpty(r.Name)).Count().Should().Be(58);
+            results.Where(r => r.IsGreen).Count().Should().Be(82);
         }
     }
 }
