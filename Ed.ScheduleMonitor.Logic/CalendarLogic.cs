@@ -50,10 +50,7 @@ namespace Ed.ScheduleMonitor.Logic
                     // Add the new event
                     _storageLogic.AddEvent(onlineEvent);
                 }
-                else if (storageEvent.Name != onlineEvent.Name && storageEvent.Code != onlineEvent.Code
-                    || storageEvent.IsGreen != onlineEvent.IsGreen
-                    || storageEvent.IsGray != onlineEvent.IsGray
-                    || storageEvent.IsRed != onlineEvent.IsRed)
+                else if (storageEvent.IsDifferentFrom(onlineEvent))
                 {
                     // Replace the existing event if it's been changed
                     _storageLogic.RemoveEvent(storageEvent);

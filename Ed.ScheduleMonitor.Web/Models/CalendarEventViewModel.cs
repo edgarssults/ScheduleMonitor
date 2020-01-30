@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace Ed.ScheduleMonitor.Web.Models
 {
@@ -63,7 +66,7 @@ namespace Ed.ScheduleMonitor.Web.Models
         /// </summary>
         public override string ToString()
         {
-            return $"{Timeslot}, {Phone}, {Experience}";
+            return string.Join(", ", new List<string> { Timeslot, Phone, Experience }.Where(v => !string.IsNullOrEmpty(v)));
         }
     }
 }

@@ -105,9 +105,9 @@ namespace Ed.ScheduleMonitor.Logic
                         continue;
                     }
 
-                    var alert = Regex.Match(column, @"onclick=""alert\('(?<name>[^;]+);[^:]*:\s*(?<code>[^;]+);[^:]*:\s*(?<phone>[^\s]+)\s*\((?<experience>[^\)]+)\)", RegexOptions.IgnoreCase);
+                    var alert = Regex.Match(column, @"onclick=""alert\('(?<name>[^;]+);[^:]*:\s*(?<code>[^;]+);[^:]*:\s*(?<phone>[^\s']+)\s*(\((?<experience>[^\)]+)\))?", RegexOptions.IgnoreCase);
                     var timeSlot = columnMatches[0].Groups["content"].Value;
-                    var styleMatch = Regex.Match(column, @"class=""(?<content>[^""]+)""").Groups["content"].Value;
+                    var styleMatch = Regex.Match(column, @"<td[^>]*class=""(?<content>[^""]+)""").Groups["content"].Value;
 
                     entries.Add(new CalendarEvent
                     {
@@ -126,7 +126,7 @@ namespace Ed.ScheduleMonitor.Logic
                             int.Parse(timeSlot.Substring(9, 2)),
                             0),
                         IsRed = styleMatch.Contains("red"),
-                        IsGray = styleMatch.Contains("gray2"),
+                        IsGray = styleMatch.Contains("gray2") || (string.IsNullOrWhiteSpace(styleMatch) && !string.IsNullOrEmpty(alert.Groups["name"].Value)),
                         IsGreen = styleMatch.Contains("green"),
                         Name = alert.Groups["name"].Value,
                         Code = alert.Groups["code"].Value,

@@ -29,9 +29,11 @@ namespace Ed.ScheduleMonitor.Test
             var results = _target.ParseScheduleHtml(html, username);
 
             results.Count.Should().Be(280);
-            results.Where(r => string.IsNullOrEmpty(r.Name)).Count().Should().Be(222);
-            results.Where(r => !string.IsNullOrEmpty(r.Name)).Count().Should().Be(58);
+            results.Where(r => string.IsNullOrEmpty(r.Name)).Count().Should().Be(221);
+            results.Where(r => !string.IsNullOrEmpty(r.Name)).Count().Should().Be(59);
             results.Where(r => r.IsGreen).Count().Should().Be(82);
+            results.Where(r => r.IsRed).Count().Should().Be(58);
+            results.Where(r => r.IsGray).Count().Should().Be(81);
         }
     }
 }
